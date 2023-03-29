@@ -6,10 +6,12 @@ from xmitgcm import llcreader
 from os.path import abspath, expanduser, expandvars
 from os import PathLike
 from typing import List, Union
+import dask
 
 MODEL_LLC2160 = 'llc2160'
 MODEL_LLC4320 = 'llc4320'
 
+dask.config.set(**{'array.slicing.split_large_chunks': False})
 
 def _expand_path(path: str) -> str:
     """
@@ -41,11 +43,12 @@ def extract_llc(model_name: Union(MODEL_LLC2160, MODEL_LLC4320),
     else:
         raise ValueError(f"Invalid model {model_name}")
 
-    if fdepth:
-        ds = model.get_dataset(varnames=varnames, iters=iter,
-                               k_levels=klevel, read_grid=False)
-    else:
-        ds = model.get_dataset(varnames=varnames, iters=iter, read_grid=False)
+    #if fdepth:
+    #    ds = model.get_dataset(varnames=varnames, iters=iter,read_grid=False)
+    #else:
+    #    ds = model.get_dataset(varnames=varnames, iters=iter, klevels=klevel, read_grid=False)
+    klevel = list(range(90))
+    ds = model.get_dataset(varnames=varnames, iters=iter, k_levels=klevel, read_grid=False)
 
     if verbose:
         print(ds)
@@ -56,7 +59,12 @@ def extract_llc(model_name: Union(MODEL_LLC2160, MODEL_LLC4320),
                           i_g=slice(istart, iend),
                           j=slice(jstart, jend),
                           j_g=slice(jstart, jend))
-    ds_isel.to_netcdf(path)
+    print(ds.U.dims)
+    vchunk=5
+    hchunk=60
+    comp = dict(zlib=True, complevel=1, chunksizes=(1,vchunk,1,hchunk,hchunk))
+    encoding = {var: comp for var in ds_isel.data_vars}
+    ds_isel.to_netcdf(path,encoding=encoding)
 
 
 @click.command()
