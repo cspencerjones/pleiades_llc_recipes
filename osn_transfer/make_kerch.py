@@ -1,6 +1,6 @@
 import os
 folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields'
-arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f1_k0_chunkd_iter')]
+arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f')]
 
 
 import xarray as xr
@@ -24,7 +24,10 @@ for u in urls:
         #singles.append(h5chunks.translate())
         ##
         #variable = u.split('/')[-1].split('.')[0]
-        iter = u.split('/')[-1].split('.')[0].split('_')[-1]
-        outf = f'/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/surfa_face1_chunkd_{iter}.json' #file name to save json to
+        #iter = u.split('/')[-1].split('.')[0].split('_')[-1]
+        outpath = f'/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/'
+        filename = u.split('/')[-1].split('.')[0] + '.json'
+        outf = outpath + filename #file name to save json to
+        print(outf)
         with fs2.open(outf, 'wb') as f:
             f.write(ujson.dumps(h5chunks.translate()).encode());

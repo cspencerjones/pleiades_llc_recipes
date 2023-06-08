@@ -59,13 +59,13 @@ def extract_llc(model_name: Union(MODEL_LLC2160, MODEL_LLC4320),
         path=ffirst + str(facen1) + fsecond
         expanded_path = _expand_path(out_dir+path) 
         print(path)
-        ds_sel = ds.sel(face=int(facen1))
+        ds_sel = ds.sel(face=[int(facen1)])
         #print(ds_sel)
         vchunk=1
         # a is 60, b is 240, c is 360, d is 720
         hchunk=360
-        comp = dict(zlib=True, complevel=1, chunksizes=(1,vchunk,hchunk,hchunk))
-        comp2D = dict(zlib=True, complevel=1, chunksizes=(1,hchunk,hchunk))
+        comp = dict(zlib=True, complevel=1, chunksizes=(1,vchunk,1,hchunk,hchunk))
+        comp2D = dict(zlib=True, complevel=1, chunksizes=(1,1,hchunk,hchunk))
         encoding3D = {var: comp for var in ds_sel.drop("Eta").data_vars}
         encoding2D = {var: comp2D for var in ds_sel["Eta"].to_dataset().data_vars}
         encoding = encoding3D | encoding2D
@@ -87,7 +87,7 @@ def extract_llc(model_name: Union(MODEL_LLC2160, MODEL_LLC4320),
 @click.option('--jstart', default='0', help='Start of j indices to cut out')
 @click.option('--jend', default='2160', help='End of j indices to cut out')
 @click.option('--fdepth', default='n', help='Output view of xarray.')
-@click.option('--verbose', default='n', help='Output view of xarray')
+@click.option('--verbose', default='y', help='Output view of xarray')
 def main(model_name, variables, klevel, iter, out_dir, facen, istart, iend, jstart, jend, fdepth, verbose):
     """ Program to read some llc data and output netcdf file.
     Take all inputs as strings, or lists as '["var1","var2"]' """
@@ -106,9 +106,9 @@ def main(model_name, variables, klevel, iter, out_dir, facen, istart, iend, jsta
     var_names = '-'.join(vars for vars in varnames)
     k_names = '-'.join(str(klev) for klev in klevel)
     faceno = str(facen).replace("[","").replace("]","")
-    fname = f'{model_name}_'+var_names+'_f'+faceno+'_k'+k_names+'_chunkc'+f'_iter_{iter[0]}.nc'
+    fname = f'{model_name}_'+var_names+'_f'+faceno+'_k'+k_names+f'_iter_{iter[0]}.nc'
     ffirst = f'{model_name}_'+var_names+'_f'
-    fsecond = f'_k'+k_names+'_chunkc'+f'_iter_{iter[0]}.nc'
+    fsecond = f'_k'+k_names+f'_iter_{iter[0]}.nc'
 #    expanded_path = _expand_path(out_dir+fname)
 
     extract_llc(model_name=model_name,

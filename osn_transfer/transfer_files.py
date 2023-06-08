@@ -11,9 +11,11 @@ s3 = boto3.resource('s3',
                      endpoint_url='https://mghp.osn.xsede.org')
 
 
-path = "/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields/"
-for i in range(0,100):
-    iterno = 10512+i*144
-    print('iterno:',iterno)
-    fname = f'llc4320_Eta-U-V-W-Theta-Salt_f1_k0_chunkd_iter_{iterno}.nc'
-    s3.Bucket('cnh-bucket-1').upload_file(path + fname, f"csjones/temp/{fname}")
+folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields'
+arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f')]
+
+urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields/" + p for p in arr]
+
+for u in urls:
+    fname = u.split('/')[-1]
+    s3.Bucket('cnh-bucket-1').upload_file(u, f"llc_surf/netcdf_files/{fname}")
