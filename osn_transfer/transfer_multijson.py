@@ -12,8 +12,12 @@ s3 = boto3.resource('s3',
 
 folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json'
 arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f')]
+#folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/grid/json_files'
+#arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_grid_f')]
+
 
 urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/" + p for p in arr]
+#urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/grid/json_files/" + p for p in arr]
 
 for u in urls:
     print(u)

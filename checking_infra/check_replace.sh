@@ -8,20 +8,19 @@
 # asks for 32 nodes and 8 MPI processes per node.
 # This request implies 32x8 = 256 MPI processes for the job.
 #PBS -q devel
-#PBS -l select=1:ncpus=4:mpiprocs=1:mem=30GB:model=san,pmem=3gb
-#PBS -l walltime=01:00:00
+#PBS -l select=1:ncpus=1:mpiprocs=1:model=san
+#PBS -l place=scatter:shared
+#PBS -l walltime=00:20:00
 #PBS -j oe
 #PBS -W group_list=s2295
 #PBS -m e
 
 #s2295 is our group number
 
+# Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
+
 module load singularity
 
-# Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
-seq 20 29 | parallel -j 4 -u \
- "cd $PWD;./job_sing.sh {}"
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_replace.py
 
-
-# I removed --memfree 1GB
 # -end of script-

@@ -13,8 +13,11 @@ s3 = boto3.resource('s3',
 
 folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields'
 arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f')]
+#folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/grid/netcdf_files'
+#arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_grid')]
 
 urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields/" + p for p in arr]
+#urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/grid/netcdf_files/" + p for p in arr]
 
 for u in urls:
     fname = u.split('/')[-1]

@@ -9,6 +9,7 @@
 # This request implies 32x8 = 256 MPI processes for the job.
 #PBS -q devel
 #PBS -l select=1:ncpus=1:mpiprocs=1:model=san
+#PBS -l place=scatter:shared
 #PBS -l walltime=00:20:00
 #PBS -j oe
 #PBS -W group_list=s2295
@@ -20,7 +21,6 @@
 
 module load singularity
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 --bind /nobackupp1:/nobackupp1 --bind /nobackupp17:/nobackupp17 --bind /nobackupp19:/nobackupp19 --bind /home6/dmenemen:/home6/dmenemen  /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/osn_transfer/make_kerch.py
-
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/garbage_disposal.py
 
 # -end of script-

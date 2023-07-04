@@ -11,4 +11,4 @@
 #PBS -W group_list=s2295
 #PBS -m e
 
-find /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/ -type f -wholename '*' | xargs -P10 sed -i 's/\\\/nobackup\\\/csjone15\\\/pleiades_llc_recipes\\\/python_cli_data_export\\\/surf_extract\\\/surf_fields/cnh-bucket-1\\\/llc_surf\\\/netcdf_files/g' 
+find /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/grid/json_files/ -type f -wholename '*' | xargs -P10 sed -i 's/\\\/nobackup\\\/csjone15\\\/pleiades_llc_recipes\\\/python_cli_data_export/cnh-bucket-1\\\/llc_surf\\\/netcdf_files/g' 
