@@ -27,7 +27,7 @@ fs = s3fs.S3FileSystem(
 )
 
 
-df = pd.read_csv('checklist1.csv').set_index('names')
+df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv').set_index('names')
 
 for name in df.index:
     if (df.loc[name]['NConDISK']==1):
@@ -54,4 +54,4 @@ for name in df.index:
         if (check1==to_check):
             df.loc[name]['JSONonOSN']=1
 
-df.to_csv('checklist1.csv')
+df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')

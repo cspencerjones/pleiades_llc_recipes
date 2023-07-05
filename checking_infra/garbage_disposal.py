@@ -2,7 +2,7 @@ print('begin garbage disposal')
 import pandas as pd
 import os
 
-df = pd.read_csv('checklist1.csv').set_index('names')
+df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv').set_index('names')
 
 json_path = '/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/'
 
@@ -17,4 +17,4 @@ for name in df.index:
             os.remove(nc_path + name + '.nc')
             df.loc[name]['NConDISK']=0
 
-df.to_csv('checklist1.csv')
+df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')

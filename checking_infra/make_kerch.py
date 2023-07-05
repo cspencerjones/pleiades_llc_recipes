@@ -11,7 +11,7 @@ so = dict(
     anon=True, default_fill_cache=False, default_cache_type='first'
 )
 
-df = pd.read_csv('checklist1.csv').set_index('names')
+df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv').set_index('names')
 
 fs2 = fsspec.filesystem('')
 
@@ -30,7 +30,7 @@ for name in df.index:
         else:
             break
 
-df.to_csv('checklist1.csv')
+df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')
 
 #folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields'
 #arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f')]

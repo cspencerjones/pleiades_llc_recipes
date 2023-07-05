@@ -22,3 +22,4 @@ urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_ext
 for u in urls:
     fname = u.split('/')[-1]
     s3.Bucket('cnh-bucket-1').upload_file(u, f"llc_surf/netcdf_files/{fname}")
+    print('fname')
