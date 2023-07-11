@@ -5,6 +5,8 @@ import fsspec
 import ujson
 import pandas as pd
 
+
+
 nc_path = '/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields/'
 outpath = f'/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/'
 so = dict(
@@ -15,7 +17,7 @@ df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checkli
 
 fs2 = fsspec.filesystem('')
 
-for name in df.index:
+def make_json(name):
     if ((df.loc[name]['NConDISK']==0) & (df.loc[name]['NConOSN']==0)):
         path = nc_path +name + '.nc'
         if(os.path.isfile(path)):
@@ -27,8 +29,14 @@ for name in df.index:
                     with fs2.open(outf, 'wb') as f:
                          f.write(ujson.dumps(h5chunks.translate()).encode());
                 df.loc[name]['NConDISK']=1
-        else:
-            break
+#        else:
+#            break
+if __name__ == '__main__':
+     from dask.distributed import LocalCluster, get_task_stream, Client
+     cluster = LocalCluster(n_workers=2)
+     client = Client(cluster)
+     [make_json(name) for name in df.index]
+
 
 df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')
 

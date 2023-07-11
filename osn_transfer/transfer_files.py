@@ -19,7 +19,16 @@ arr = [filename for filename in os.listdir(folder) if filename.startswith('llc43
 urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields/" + p for p in arr]
 #urls = ["/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/grid/netcdf_files/" + p for p in arr]
 
-for u in urls:
+def upload_a_file(u):
     fname = u.split('/')[-1]
     s3.Bucket('cnh-bucket-1').upload_file(u, f"llc_surf/netcdf_files/{fname}")
-    print('fname')
+
+
+import sys
+sys.path.append(".")
+
+from concurrent.futures import ProcessPoolExecutor, as_completed
+with ProcessPoolExecutor(max_workers=2) as pool:
+    futures = [pool.submit(upload_a_file,u) for u in urls]
+    results = [f.result() for f in as_completed(futures)]
+

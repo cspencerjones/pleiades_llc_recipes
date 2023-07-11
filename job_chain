@@ -1,0 +1,7 @@
+#!/bin/bash
+one=$(qsub python_cli_data_export/surf_extract/parallel_extract.sh)
+echo $one 
+two=$(qsub -W depend=afterok:$one checking_infra/transfer.pbs)
+echo $two
+three=$(qsub -W depend=afterok:$two checking_infra/garbage.sh)
+echo $three

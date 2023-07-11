@@ -7,7 +7,7 @@
 # to allow more memory per MPI process. This example
 # asks for 32 nodes and 8 MPI processes per node.
 # This request implies 32x8 = 256 MPI processes for the job.
-#PBS -q devel
+#PBS -q normal
 #PBS -l select=1:ncpus=1:mpiprocs=1:model=san
 #PBS -l place=scatter:shared
 #PBS -l walltime=00:20:00
