@@ -17,8 +17,8 @@ df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checkli
 
 fs2 = fsspec.filesystem('')
 
-def make_json(name):
-    if ((df.loc[name]['NConDISK']==0) & (df.loc[name]['NConOSN']==0)):
+for name in df.index:
+    if (((df.loc[name]['NConDISK']==0) & (df.loc[name]['NConOSN']==0)) | ((df.loc[name]['NConDISK']==1) & (df.loc[name]['JSONonDISK']==0))):
         path = nc_path +name + '.nc'
         if(os.path.isfile(path)):
             if(os.path.getsize(path)>10**6):
@@ -28,17 +28,17 @@ def make_json(name):
                     print(outf)
                     with fs2.open(outf, 'wb') as f:
                          f.write(ujson.dumps(h5chunks.translate()).encode());
-                df.loc[name]['NConDISK']=1
-#        else:
-#            break
-if __name__ == '__main__':
-     from dask.distributed import LocalCluster, get_task_stream, Client
-     cluster = LocalCluster(n_workers=2)
-     client = Client(cluster)
-     [make_json(name) for name in df.index]
+                #df.loc[name]['NConDISK']=1
+        else:
+            break
+#if __name__ == '__main__':
+#     from dask.distributed import LocalCluster, get_task_stream, Client
+#     cluster = LocalCluster(n_workers=4)
+#     client = Client(cluster)
+#     [make_json(name) for name in df.index]
 
 
-df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')
+#df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')
 
 #folder='/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields'
 #arr = [filename for filename in os.listdir(folder) if filename.startswith('llc4320_Eta-U-V-W-Theta-Salt_f')]

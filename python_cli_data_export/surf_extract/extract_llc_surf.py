@@ -71,6 +71,9 @@ def extract_llc(model_name: Union(MODEL_LLC2160, MODEL_LLC4320),
         encoding = encoding3D | encoding2D
         #    print(encoding3D)
         #    print(encoding)
+        ds_sel.attrs['history'] = 'Created by C. Spencer Jones using https://github.com/cspencerjones/pleiades_llc_recipes/blob/master/python_cli_data_export/surf_extract/extract_llc_surf.py'
+        ds_sel.attrs['source'] = 'MITgcm'
+        ds_sel.attrs['title'] = 'Chunked netcdf created from MITgcm LLC4320 surface output'
         to_compute = ds_sel.to_netcdf(expanded_path,mode="w",encoding=encoding)
         return to_compute
     [write_face(fno1).compute() for fno1 in range(0,13)]

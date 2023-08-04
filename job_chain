@@ -1,7 +1,42 @@
 #!/bin/bash
-one=$(qsub python_cli_data_export/surf_extract/parallel_extract.sh)
+  
+csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv"
+
+# Read the CSV file line by line
+while IFS= read -r line; do
+    # Extract the values from the line
+    values=$(echo "$line" | cut -d',' -f2-)
+    # Check if the values are "0,0,0,0"
+    if [ "$values" == "0,0,0,0,0" ]; then
+        iterno=$(echo "$line" | sed -n 's/llc4320\_Eta\-U\-V\-W\-Theta\-Salt\_f0\_k0\_iter\_\([0-9]*\),0,0,0,0,0/\1/p')
+        ts=$((($iterno-10368) / 144))
+        break
+    fi
+done < "$csv_file"
+#echo "Found iterno $ts for the first line with 0,0,0,0,0: $line"
+
+
+result=$(sed -n "s/seq \([0-9]*\) \([0-9]*\) | parallel -j 5 -u/\1 \2/p" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/parallel_extract.sh)
+integer1=$(echo "$result" | awk '{print $1}')
+integer2=$(echo "$result" | awk '{print $2}')
+
+#if [ "$integer1" -eq "$ts" ]; then
+#	exit 0 
+#fi
+
+starti=$ts
+endi=$((ts+40))
+
+
+sed -i "s/seq .* | parallel -j 5 -u \\\/seq $starti $endi | parallel -j 5 -u \\\/" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/parallel_extract.sh
+
+cd python_cli_data_export/surf_extract
+
+one=$(qsub parallel_extract.sh)
 echo $one 
+
+cd /nobackup/csjone15/pleiades_llc_recipes
 two=$(qsub -W depend=afterok:$one checking_infra/transfer.pbs)
 echo $two
-three=$(qsub -W depend=afterok:$two checking_infra/garbage.sh)
-echo $three
+#three=$(qsub -W depend=afterok:$two checking_infra/garbage.sh)
+#echo $three

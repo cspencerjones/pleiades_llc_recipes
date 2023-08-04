@@ -26,6 +26,8 @@ def upload_a_file(u):
 
 import sys
 sys.path.append(".")
+#for u in urls:
+#    upload_a_file(u)
 
 from concurrent.futures import ProcessPoolExecutor, as_completed
 with ProcessPoolExecutor(max_workers=2) as pool:
