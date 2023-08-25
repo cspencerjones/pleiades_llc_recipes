@@ -20,6 +20,7 @@ for name in df.index:
         if ((df.loc[name]['NConDISK']==1) & (df.loc[name]['NConOSN']==1)):
             try: 
               os.remove(nc_path + name + '.nc')
+              print("tried removing", nc_path + name + '.nc')
             except OSError as e: # name the Exception `e`
               print("Failed with:", e.strerror) # look what it says
               print("Error code:", e.code)

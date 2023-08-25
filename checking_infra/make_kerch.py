@@ -20,7 +20,9 @@ fs2 = fsspec.filesystem('')
 for name in df.index:
     if (((df.loc[name]['NConDISK']==0) & (df.loc[name]['NConOSN']==0)) | ((df.loc[name]['NConDISK']==1) & (df.loc[name]['JSONonDISK']==0))):
         path = nc_path +name + '.nc'
+        print('Trying', path)
         if(os.path.isfile(path)):
+            print('There is a file at', path)
             if(os.path.getsize(path)>10**6):
                 with fsspec.open(path, **so) as inf:
                     h5chunks = kerchunk.hdf.SingleHdf5ToZarr(inf, path, inline_threshold=100)
@@ -29,8 +31,8 @@ for name in df.index:
                     with fs2.open(outf, 'wb') as f:
                          f.write(ujson.dumps(h5chunks.translate()).encode());
                 #df.loc[name]['NConDISK']=1
-        else:
-            break
+#        else:
+#            break
 #if __name__ == '__main__':
 #     from dask.distributed import LocalCluster, get_task_stream, Client
 #     cluster = LocalCluster(n_workers=4)

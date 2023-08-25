@@ -7,7 +7,7 @@
 # to allow more memory per MPI process. This example
 # asks for 32 nodes and 8 MPI processes per node.
 # This request implies 32x8 = 256 MPI processes for the job.
-#PBS -q devel
+#PBS -q normal
 #PBS -l select=1:ncpus=1:mpiprocs=1:model=san
 #PBS -l walltime=00:20:00
 #PBS -j oe
@@ -20,15 +20,15 @@
 
 module load singularity
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 --bind /nobackupp1:/nobackupp1 --bind /nobackupp17:/nobackupp17 --bind /nobackupp19:/nobackupp19 --bind /home6/dmenemen:/home6/dmenemen  /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/make_kerch.py
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/make_kerch.py
 
+echo message | date
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_for_json.py
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_for_json.py
 
 find /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/ -type f -wholename '*' | xargs -P10 sed -i 's/\\\/nobackup\\\/csjone15\\\/pleiades_llc_recipes\\\/python_cli_data_export\\\/surf_extract\\\/surf_fields/cnh-bucket-1\\\/llc_surf\\\/netcdf_files/g'
 
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_replace.py
-
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_replace.py
 
 # -end of script-
