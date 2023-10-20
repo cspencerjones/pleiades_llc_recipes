@@ -19,7 +19,7 @@
 
 # Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
 
-ssh pfe27 -n "cd /nobackup/csjone15/pleiades_llc_recipes/checking_infra/; ./transfer.sh"
+ssh pfe27 -n "cd /nobackup/csjone15/pleiades_llc_recipes/checking_infra/; ./transfer_wind.sh"
 
 module load singularity
 

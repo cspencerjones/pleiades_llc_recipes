@@ -9,7 +9,7 @@
 # This request implies 32x8 = 256 MPI processes for the job.
 #PBS -q normal
 #PBS -l select=1:ncpus=2:mpiprocs=1:model=san
-#PBS -l walltime=01:59:00
+#PBS -l walltime=00:40:00
 #PBS -j oe
 #PBS -W group_list=s2295
 #PBS -m e
@@ -19,7 +19,7 @@
 
 # Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
 
-ssh pfe27 -n "cd /nobackup/csjone15/pleiades_llc_recipes/checking_infra/; ./transfer.sh"
+ssh pfe27 -n "cd /nobackup/csjone15/pleiades_llc_recipes/checking_infra/; ./transfer_wind2.sh"
 
 module load singularity
 

@@ -9,7 +9,7 @@
 # This request implies 32x8 = 256 MPI processes for the job.
 #PBS -q normal
 #PBS -l select=1:ncpus=1:mpiprocs=1:model=san
-#PBS -l walltime=00:20:00
+#PBS -l walltime=01:00:00
 #PBS -j oe
 #PBS -W group_list=s2295
 #PBS -m e

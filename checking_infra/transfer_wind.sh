@@ -3,7 +3,7 @@
 source /etc/profile.d/modules.sh
 source /home1/csjone15/.profile
 
-csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv"
+csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist_wind.csv"
 
 pattern_found=false
 
@@ -29,7 +29,7 @@ module load singularity
 
 echo message | date
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/osn_transfer/transfer_files.py
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/osn_transfer/transfer_wind.py
 
 #echo message | date
 #

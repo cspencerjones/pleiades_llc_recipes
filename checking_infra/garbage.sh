@@ -24,6 +24,6 @@ singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /no
 
 cd /nobackup/csjone15/pleiades_llc_recipes/
 
-#./job_chain 
+./job_chain 
 
 # -end of script-

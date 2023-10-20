@@ -1,6 +1,6 @@
 #!/bin/bash
  
-directory_path="/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields"
+directory_path="/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_wind"
 
 # Check if there are any files in the directory
 #if [ -n "$(ls -A "$directory_path")" ]; then
@@ -11,7 +11,7 @@ directory_path="/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/s
 
 counter=0
 
-csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv"
+csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist_wind.csv"
 
 # Read the CSV file line by line
 while IFS= read -r line; do
@@ -21,8 +21,8 @@ while IFS= read -r line; do
     if [ "$values" == "0,0,0,0,0" ]; then
 	if ((counter==0))
 	then
-        iterno=$(echo "$line" | sed -n 's/llc4320\_Eta\-U\-V\-W\-Theta\-Salt\_f.\_k0\_iter\_\([0-9]*\),0,0,0,0,0/\1/p')
-        ts=$((($iterno-10368) / 144))
+        iterno=$(echo "$line" | sed -n 's/llc4320\_KPPhbl\-PhiBot\-oceTAUX\-oceTAUY\-SIarea\_f.\_k0\_iter\_\([0-9]*\),0,0,0,0,0/\1/p')
+        ts=$((($iterno-179856) / 144))
         fi
 	counter=$((counter+1))
 	echo $counter
@@ -38,7 +38,7 @@ done < "$csv_file"
 echo "Found iterno $ts for the first line with 0,0,0,0,0: $line"
 echo $counter
 
-result=$(sed -n "s/seq \([0-9]*\) \([0-9]*\) | parallel -j . -u/\1 \2/p" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/parallel_extract.sh)
+result=$(sed -n "s/seq \([0-9]*\) \([0-9]*\) | parallel -j . -u/\1 \2/p" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/wind.pbs)
 integer1=$(echo "$result" | awk '{print $1}')
 integer2=$(echo "$result" | awk '{print $2}')
 
@@ -50,19 +50,19 @@ starti=$ts
 endi=$((ts+$counter/12-1))
 
 
-sed -i "s/seq .* | parallel -j 4 -u \\\/seq $starti $endi | parallel -j 4 -u \\\/" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/parallel_extract.sh
+sed -i "s/seq .* | parallel -j 4 -u \\\/seq $starti $endi | parallel -j 4 -u \\\/" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/wind.pbs
 
 cd python_cli_data_export/surf_extract
 
-one=$(qsub parallel_extract.sh)
+one=$(qsub wind.pbs)
 echo $one 
 
 cd /nobackup/csjone15/pleiades_llc_recipes
-two=$(qsub -W depend=afterok:$one checking_infra/make_kerch.sh)
+two=$(qsub -W depend=afterok:$one checking_infra/kerch_wind.sh)
 echo $two
-three=$(qsub -W depend=afterok:$two checking_infra/transfer.pbs)
+three=$(qsub -W depend=afterok:$two checking_infra/transfer_wind.pbs)
 echo $three
-four=$(qsub -W depend=afterany:$three checking_infra/transfer2.pbs)
+four=$(qsub -W depend=afterany:$three checking_infra/transfer_wind2.pbs)
 echo $four
-five=$(qsub -W depend=afterok:$four checking_infra/garbage.sh)
+five=$(qsub -W depend=afterok:$four checking_infra/garbage_wind.sh)
 echo $five
