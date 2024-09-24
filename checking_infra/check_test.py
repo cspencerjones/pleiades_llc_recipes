@@ -18,7 +18,7 @@ def md5_checksum(filename):
             m.update(data)
     return m.hexdigest()
 
-nc_path = '/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_wind/'
+nc_path = '/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_fields/'
 
 endpoint_url = 'https://mghp.osn.xsede.org'
 fs = s3fs.S3FileSystem(
@@ -27,18 +27,17 @@ fs = s3fs.S3FileSystem(
 )
 
 
-df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist_wind.csv').set_index('names')
+df = pd.read_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv').set_index('names')
 
 for name in df.index:
     if ((df.loc[name]['NConDISK']==1) & (df.loc[name]['NConOSN']==0)):
-        print(name, df.loc[name]['NConDISK'], df.loc[name]['NConDISK'])
         check1 = etag_checksum(nc_path + name + '.nc')
-        file_url = 'cnh-bucket-1/llc_wind/netcdf_files/' + name +'.nc'
+        file_url = 'cnh-bucket-1/llc_surf/netcdf_files/' + name +'.nc'
         to_check = fs.info(file_url)['ETag'].strip('\"')
-        if (check1==to_check):
-            df.loc[name]['NConOSN']=1
+#        if (check1==to_check):
+#            df.loc[name]['NConOSN']=1
 
-nc_path = '/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/wind_json/'
+#nc_path = '/nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/surf_json/'
 
 endpoint_url = 'https://mghp.osn.xsede.org'
 fs = s3fs.S3FileSystem(
@@ -50,9 +49,9 @@ fs = s3fs.S3FileSystem(
 for name in df.index:
     if (df.loc[name]['JSONonDISK']==1):
         check1 = md5_checksum(nc_path + name + '.json')
-        file_url = 'cnh-bucket-1/llc_wind/kerchunk_files/' + name +'.json'
+        file_url = 'cnh-bucket-1/llc_surf/kerchunk_files/' + name +'.json'
         to_check = fs.info(file_url)['ETag'].strip('\"')
-        if (check1==to_check):
-            df.loc[name]['JSONonOSN']=1
+#        if (check1==to_check):
+#            df.loc[name]['JSONonOSN']=1
 
-df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist_wind.csv')
+df.to_csv('/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv')

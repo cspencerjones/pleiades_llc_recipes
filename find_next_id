@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Replace "your_csv_file.csv" with the actual path to your CSV file
+csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv"
+
+# Read the CSV file line by line
+while IFS= read -r line; do
+    # Extract the values from the line
+    values=$(echo "$line" | cut -d',' -f2-)
+    # Check if the values are "0,0,0,0"
+    if [ "$values" == "0,0,0,0,0" ]; then
+	iterno=$(echo "$line" | sed -n 's/llc4320\_Eta\-U\-V\-W\-Theta\-Salt\_f0\_k0\_iter\_\([0-9]*\),0,0,0,0,0/\1/p')
+	ts=$((($iterno-10368) / 144))
+	break
+    fi
+done < "$csv_file"
+echo "Found iterno $ts for the first line with 0,0,0,0,0: $line"

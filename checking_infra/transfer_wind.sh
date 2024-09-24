@@ -19,10 +19,10 @@ while IFS= read -r line; do
 done < "$csv_file"
 echo "Found iterno $ts for the first line with 0,0,0,0,0: $line"
 
-if [ "$pattern_found" = false ]; then
-    echo "Pattern not found in any line. Exiting..."
-    exit 1
-fi
+#if [ "$pattern_found" = false ]; then
+#    echo "Pattern not found in any line. Exiting..."
+#    exit 1
+#fi
 
 
 module load singularity

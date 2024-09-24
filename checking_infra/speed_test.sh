@@ -3,7 +3,7 @@
 source /etc/profile.d/modules.sh
 source /home1/csjone15/.profile
 
-csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist_wind.csv"
+csv_file="/nobackup/csjone15/pleiades_llc_recipes/checking_infra/checklist1.csv"
 
 pattern_found=false
 
@@ -19,25 +19,25 @@ while IFS= read -r line; do
 done < "$csv_file"
 echo "Found iterno $ts for the first line with 0,0,0,0,0: $line"
 
-#if [ "$pattern_found" = false ]; then
-#    echo "Pattern not found in any line. Exiting..."
-#    exit 1
-#fi
+if [ "$pattern_found" = false ]; then
+    echo "Pattern not found in any line. Exiting..."
+    exit 1
+fi
 
 
 module load singularity
 
-echo message | date
+#echo message | date
 
 #singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/osn_transfer/transfer_files.py
 
 echo message | date
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/osn_transfer/transfer_multijson_wind.py
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/osn_transfer/transfer_multijson.py
 
 echo message | date
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_wind_checksum.py
+singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pang python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/check_test.py
 
 echo message | date
 

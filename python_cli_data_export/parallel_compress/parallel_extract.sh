@@ -8,7 +8,7 @@
 # asks for 32 nodes and 8 MPI processes per node.
 # This request implies 32x8 = 256 MPI processes for the job.
 #PBS -q normal
-#PBS -l select=1:ncpus=1:mpiprocs=1:model=san
+#PBS -l select=1:ncpus=2:mpiprocs=1:model=san,pvmem=15gb
 #PBS -l walltime=00:20:00
 #PBS -j oe
 #PBS -W group_list=s2295
@@ -16,14 +16,10 @@
 
 #s2295 is our group number
 
-# Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
-
 module load singularity
 
-singularity exec --bind /nobackup:/nobackup --bind /nobackupp12:/nobackupp12 /nobackup/csjone15/notebook_pangeo.sif python /nobackup/csjone15/pleiades_llc_recipes/checking_infra/garbage_disposal_wind.py
-
-cd /nobackup/csjone15/pleiades_llc_recipes/
-
-./wind_chain 
+# Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
+seq 2 | parallel -j 2 -u \
+ "cd $PWD;./job_sing.sh {}"
 
 # -end of script-

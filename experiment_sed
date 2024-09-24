@@ -1,0 +1,7 @@
+#!/bin/bash
+
+starti=118
+endi=118
+
+
+sed -i "s/seq 111 119 | parallel -j 5 -u \\\/seq $starti $endi | parallel -j 5 -u \\\/" /nobackup/csjone15/pleiades_llc_recipes/python_cli_data_export/surf_extract/exp_parallel_extract.sh

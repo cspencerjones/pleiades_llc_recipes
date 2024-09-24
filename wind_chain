@@ -64,5 +64,5 @@ three=$(qsub -W depend=afterok:$two checking_infra/transfer_wind.pbs)
 echo $three
 four=$(qsub -W depend=afterany:$three checking_infra/transfer_wind2.pbs)
 echo $four
-five=$(qsub -W depend=afterok:$four checking_infra/garbage_wind.sh)
+five=$(qsub -W depend=afterany:$four checking_infra/garbage_wind.sh)
 echo $five

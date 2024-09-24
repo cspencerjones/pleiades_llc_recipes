@@ -22,12 +22,12 @@ module load singularity
 echo message | date
 
 # Load a compiler you use to build your executable, for example, comp-intel/2015.0.090.
-seq 5 34 | parallel -j 4 -u \
+seq 6178 6207 | parallel -j 4 -u \
  "cd $PWD;./job_wind.sh {}"
 
 
 
-#./job_wind.sh 0
+#./job_wind.sh 5785
 
 echo message | date
 
